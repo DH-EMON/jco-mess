@@ -180,13 +180,15 @@ function r2(x){return Math.round(x*100)/100}
 function fm(x){return toBn(String(r2(x)))}
 var MN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
 var MEALS=[["morning","সকাল/ট্রি ব্রেক"],["noon","দুপুরের খাবার"],["night","রাত/ট্রি ব্রেক"]];
+var PEOPLE0=[["SWO","আজিজুল"],["SWO","শামসুল"],["WO","আবুল"],["WO","সাইফুল"],["WO","জুলহাস"],["WO","নারায়ণ"],["WO","আজিজ"],["WO","রহিম"],["WO","জিয়া"]];
 function blankDays(){var a=[];for(var i=0;i<31;i++)a.push(null);return a}
 function fresh(){var d=new Date(),o={type:"morning",y:String(d.getFullYear()),m:String(d.getMonth()+1),people:[],amt:{}};
-for(var i=0;i<9;i++)o.people.push({p:"",n:""});
+PEOPLE0.forEach(function(x){o.people.push({p:x[0],n:x[1]})});
 MEALS.forEach(function(m){o.amt[m[0]]=o.people.map(blankDays)});return o}
 var KEY="jco-mess1",S=null;
 try{S=JSON.parse(localStorage.getItem(KEY))}catch(x){}
 if(!S||!S.people||!S.amt||!MEALS.every(function(m){return Array.isArray(S.amt[m[0]])}))S=fresh();
+if(S.people.length>=PEOPLE0.length&&S.people.every(function(q){return!q.p&&!q.n}))PEOPLE0.forEach(function(x,i){S.people[i].p=x[0];S.people[i].n=x[1]});
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
 function dim(){return new Date(+S.y,+S.m,0).getDate()}
 function mname(){for(var i=0;i<MEALS.length;i++)if(MEALS[i][0]===S.type)return MEALS[i][1];return ""}
